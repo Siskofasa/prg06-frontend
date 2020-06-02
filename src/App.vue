@@ -1,17 +1,24 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <Index />
+    <Create />
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import Index from './components/Index.vue'
+import Create from './components/Create.vue'
+import Edit from './components/Edit.vue'
+import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
+import BootstrapVue from "bootstrap-vue"
+
 
 export default {
   name: 'App',
   components: {
-    HelloWorld
+    Index,
+    Edit,
+    Create
   }
 }
 </script>
@@ -24,5 +31,6 @@ export default {
   text-align: center;
   color: #2c3e50;
   margin-top: 60px;
+  margin-left: auto;
 }
 </style>
