@@ -9,20 +9,29 @@
             <div class="card-body">
                 <form v-on:submit.prevent="updateItem">
                     <div class="form-group">
-                        <label>Match name:</label>
-                        <input type="text" class="form-control" v-model="item.matchName"/>
+                        <label>Problem name:</label>
+                        <input type="text" class="form-control" v-model="item.problemName"/>
                     </div>
                     <div class="form-group">
-                        <label>Match date:</label>
-                        <input type="text" class="form-control" v-model="item.matchDate" />
+                        <label>Problem subject:</label>
+                        <input type="text" class="form-control" v-model="item.problemSubject" />
                     </div>
                     <div class="form-group">
-                        <label>Match score:</label>
-                        <input type="text" class="form-control" v-model="item.matchScore" />
+                        <label>Problem code:</label>
+                        <textarea v-model="item.problemPiecesRaw"></textarea>
                     </div>
                     <div class="form-group">
-                        <label>Match rank:</label>
-                        <input type="text" class="form-control" v-model="item.matchRank" />
+                        <label>Hints:</label>
+                        <input type="checkbox" id="distractorEliminateHint" value="EliminateDistractor"
+                               v-model="item.problemHintsRaw">
+                        <label for="distractorEliminateHint">Eliminate Distractor</label>
+                        <input type="checkbox" id="partlyCorrectExerciseHint" value="PartlyCorrectExercise"
+                               v-model="item.problemHintsRaw">
+                        <label for="partlyCorrectExerciseHint">Partly Correct Exercise</label>
+                        <input type="checkbox" id="showCorrectnessHint" value="ShowCorrectness"
+                               v-model="item.problemHintsRaw">
+                        <label for="showCorrectnessHint">Show Correctness</label>
+                        <!--                        <input type="text" class="form-control" v-model="item.problemHints"/>-->
                     </div>
                     <div class="form-group">
                         <input type="submit" class="btn btn-primary" value="Update Item"/>
@@ -56,6 +65,9 @@
             updateItem()
             {
                 let uri = 'http://siskofasa.nl:3000/api/parsonsproblems/update/' + this.$route.params.id;
+
+                console.log("Edit.vue");
+
                 this.axios.post(uri, this.item).then((response) => {
                     this.$router.push({name: 'Index'});
                 });

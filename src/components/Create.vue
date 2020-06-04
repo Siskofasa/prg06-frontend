@@ -17,7 +17,7 @@
                         <input type="text" class="form-control" v-model="item.problemSubject"/>
                     </div>
                     <div class="form-group">
-                        <label>Problem Code:</label>
+                        <label>Problem code:</label>
                         <textarea v-model="item.problemPiecesRaw"></textarea>
                     </div>
                     <div class="form-group">
@@ -76,15 +76,27 @@ return true #distractor -->
     }
 
     function parseHints(hintsArray) {
-        const resultingObject = {
-            "EliminateDistractor": false,
-            "PartlyCorrectExercise": false,
-            "ShowCorrectness": false
-        }
+
+        const resultingObject = [
+            {
+                hintName: "EliminateDistractor",
+                hintValid: false
+            },
+            {
+                hintName: "PartlyCorrectExercise",
+                hintValid: false
+            },
+            {
+                hintName: "ShowCorrectness",
+                hintValid: false
+            }
+        ]
 
         for (let hint in hintsArray) {
-            if (hintsArray.hasOwnProperty(hint)) {
-                resultingObject[hintsArray[hint]] = true
+            for(let checkHint in resultingObject) {
+                if(hintsArray[hint] === resultingObject[checkHint].hintName) {
+                    resultingObject[checkHint].hintValid = true;
+                }
             }
         }
 
@@ -118,9 +130,10 @@ return true #distractor -->
 
                 let uri = 'http://siskofasa.nl:3000/api/parsonsproblems/';
                 this.axios.defaults.headers.post['Access-Control-Allow-Origin'] = '*';
-                this.axios.post(uri, this.item).then((response) => {
-                    console.log(response.data)
-                });
+                this.axios.defaults.headers.post['Content-Type'] ='application/json;charset=utf-8';
+                    this.axios.post(uri, this.item).then((response) => {
+                        console.log(response.data)
+                    });
             }
         }
     }
