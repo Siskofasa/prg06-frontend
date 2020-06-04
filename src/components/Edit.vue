@@ -47,7 +47,7 @@
         methods: {
             getItem()
             {
-                let uri = 'http://siskofasa.nl:8000/api/archerymatch/edit/' + this.$route.params.id;
+                let uri = 'http://siskofasa.nl:3000/api/parsonsproblems/edit/' + this.$route.params.id;
                 this.axios.get(uri).then((response) => {
                     this.item = response.data;
                 });
@@ -55,7 +55,7 @@
 
             updateItem()
             {
-                let uri = 'http://siskofasa.nl:8000/api/archerymatch/update/' + this.$route.params.id;
+                let uri = 'http://siskofasa.nl:3000/api/parsonsproblems/update/' + this.$route.params.id;
                 this.axios.post(uri, this.item).then((response) => {
                     this.$router.push({name: 'Index'});
                 });

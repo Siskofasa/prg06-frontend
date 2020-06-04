@@ -4,25 +4,34 @@
     <div id="addmatch">
         <div class="match">
             <div class="match-header">
-                <h3>Add Match</h3>
+                <h3>Add Problem</h3>
             </div>
             <div class="match-body">
                 <form v-on:submit.prevent="addMatch">
                     <div class="form-group">
-                        <label>Match name:</label>
-                        <input type="text" class="form-control" v-model="item.matchName"/>
+                        <label>Problem name:</label>
+                        <input type="text" class="form-control" v-model="item.problemName"/>
                     </div>
                     <div class="form-group">
-                        <label>Match date:</label>
-                        <input type="text" class="form-control" v-model="item.matchDate"/>
+                        <label>Problem subject:</label>
+                        <input type="text" class="form-control" v-model="item.problemSubject"/>
                     </div>
                     <div class="form-group">
-                        <label>Match score:</label>
-                        <input type="text" class="form-control" v-model="item.matchScore"/>
+                        <label>Problem Code:</label>
+                        <textarea v-model="item.problemPiecesRaw"></textarea>
                     </div>
                     <div class="form-group">
-                        <label>Match rank:</label>
-                        <input type="text" class="form-control" v-model="item.matchRank"/>
+                        <label>Hints:</label>
+                        <input type="checkbox" id="distractorEliminateHint" value="EliminateDistractor"
+                               v-model="item.problemHintsRaw">
+                        <label for="distractorEliminateHint">Eliminate Distractor</label>
+                        <input type="checkbox" id="partlyCorrectExerciseHint" value="PartlyCorrectExercise"
+                               v-model="item.problemHintsRaw">
+                        <label for="partlyCorrectExerciseHint">Partly Correct Exercise</label>
+                        <input type="checkbox" id="showCorrectnessHint" value="ShowCorrectness"
+                               v-model="item.problemHintsRaw">
+                        <label for="showCorrectnessHint">Show Correctness</label>
+                        <!--                        <input type="text" class="form-control" v-model="item.problemHints"/>-->
                     </div>
                     <div class="form-group">
                         <input type="submit" class="btn btn-update" value="Add Match"/>
@@ -33,7 +42,55 @@
     </div>
 </template>
 
+<!--
+def is_true(boolean_value):
+if boolean_value:
+  return True
+return False
+return true #distractor -->
+
 <script>
+
+    function convertParsonString(parsonString) {
+
+        const resultingObject = []
+
+        parsonString.split("\n").forEach(row => {
+            if (row.length === 0) {
+                return
+            }
+
+            const distractor = row.search("#distractor") !== -1
+            if (distractor) {
+                row = row.split("#distractor")[0];
+            }
+
+            resultingObject.push({
+                "rule": row.trim(),
+                "ident": row.match(/^\s*/)[0].length,
+                "distractor": distractor
+            })
+        })
+
+        return resultingObject;
+    }
+
+    function parseHints(hintsArray) {
+        const resultingObject = {
+            "EliminateDistractor": false,
+            "PartlyCorrectExercise": false,
+            "ShowCorrectness": false
+        }
+
+        for (let hint in hintsArray) {
+            if (hintsArray.hasOwnProperty(hint)) {
+                resultingObject[hintsArray[hint]] = true
+            }
+        }
+
+        return resultingObject;
+    }
+
     export default {
         components: {
             name: 'AddMatch'
@@ -41,16 +98,29 @@
         data() {
             return {
                 item: {
+                    problemName: "",
+                    problemSubject: "",
+                    problemPiecesRaw: "",
+                    problemPieces: [],
+                    problemHintsRaw: [],
+                    problemHints: []
                 }
             }
         },
         methods: {
             addMatch() {
-                let uri = 'http://siskofasa.nl:8000/api/archerymatch/';
-               this.axios.post(uri, this.item).then((response) => {
+
+                this.item.problemPieces = convertParsonString(this.item.problemPiecesRaw);
+                this.item.problemHints = parseHints(this.item.problemHintsRaw);
+                delete this.item.problemPiecesRaw;
+                delete this.item.problemHintsRaw;
+                console.log(this.item);
+
+                let uri = 'http://siskofasa.nl:3000/api/parsonsproblems/';
+                this.axios.defaults.headers.post['Access-Control-Allow-Origin'] = '*';
+                this.axios.post(uri, this.item).then((response) => {
                     console.log(response.data)
                 });
-               console.log(this.item);
             }
         }
     }

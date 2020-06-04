@@ -60,7 +60,7 @@
         methods: {
             fetchItems()
             {
-                let uri = 'http://siskofasa.nl:8000/api/archerymatch';
+                let uri = 'http://siskofasa.nl:3000/api/parsonsproblems';
                 this.axios.get(uri).then((response) => {
                     this.items = response.data.items;
                 });
@@ -69,7 +69,7 @@
             deleteItem(item)
             {
                 console.log("hallo?");
-                let uri = 'http://siskofasa.nl:8000/api/archerymatch/'+item._id;
+                let uri = 'http://siskofasa.nl:8000/api/parsonsproblems/'+item._id;
                 this.items.splice(this.items.indexOf(item), 1);
 
                 this.axios.delete(uri);
@@ -77,7 +77,7 @@
 
             updateItem(item)
             {
-                let uri = 'http://siskofasa.nl:8000/api/archerymatch/' +item._id;
+                let uri = 'http://siskofasa.nl:8000/api/parsonsproblems/' +item._id;
                 this.axios.put(uri, item, { headers: {
                         'Content-Type': 'application/json'
                     } }).then((response) => {
