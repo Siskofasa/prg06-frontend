@@ -44,10 +44,10 @@
 
 <!--
 def is_true(boolean_value):
-if boolean_value:
-  return True
-return False
-return true #distractor -->
+  if boolean_value:
+    return True
+  return False
+  return true #distractor -->
 
 <script>
 
@@ -93,8 +93,8 @@ return true #distractor -->
         ]
 
         for (let hint in hintsArray) {
-            for(let checkHint in resultingObject) {
-                if(hintsArray[hint] === resultingObject[checkHint].hintName) {
+            for (let checkHint in resultingObject) {
+                if (hintsArray[hint] === resultingObject[checkHint].hintName) {
                     resultingObject[checkHint].hintValid = true;
                 }
             }
@@ -130,10 +130,10 @@ return true #distractor -->
 
                 let uri = 'http://siskofasa.nl:3000/api/parsonsproblems/';
                 this.axios.defaults.headers.post['Access-Control-Allow-Origin'] = '*';
-                this.axios.defaults.headers.post['Content-Type'] ='application/json;charset=utf-8';
-                    this.axios.post(uri, this.item).then((response) => {
-                        console.log(response.data)
-                    });
+                this.axios.defaults.headers.post['Content-Type'] = 'application/json;charset=utf-8';
+                this.axios.post(uri, this.item).then((response) => {
+                    console.log(response.data)
+                });
             }
         }
     }

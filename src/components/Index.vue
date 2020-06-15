@@ -89,6 +89,7 @@
                 row = row.split("#distractor")[0];
             }
 
+
             resultingObject.push({
                 "rule": row.trim(),
                 "ident": row.match(/^\s*/)[0].length,
